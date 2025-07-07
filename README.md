@@ -5,8 +5,8 @@ written by Ella Greetis 06-18-2025, updated 07-03-2025
 This device is a countdown display for SPARCS Satellite Acquisition of Signal (AOS) and Loss of Signal (LOS). The user will SSH into the device, input AOS and LOS timestamps (in UTC time), and the device will count down to those times. 
 
 ### Device Overview: 
-The AOS/LOS Display consists of a Raspberry Pi Model 3B+ and eight ELEGOO MAX7219 8x8 Display Modules (datasheet here). To drive these modules, it uses the Luma LED Matrix Library (github here). The device is (at the time of writing this) connected to the RoverNetwork-2.4G wifi network (password ********) and has the IP address 192.168.1.18. For SSH purposes, the username is sparcsdisplay and the password is ***********. <br>
-Passwords have been redacted in this README file, but can be seen in the Quick Start Guide in the IPL Google Drive, here: https://docs.google.com/document/d/1rztsUWNQ_UNla__ePJH0NF1tjyUHg38vNBCQB7ZZ5wE/edit?usp=sharing
+The AOS/LOS Display consists of a Raspberry Pi Model 3B+ and eight ELEGOO MAX7219 8x8 Display Modules (datasheet [here](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX7219-MAX7221.pdf)). To drive these modules, it uses the [Luma LED Matrix Library](https://github.com/rm-hull/luma.led_matrix/tree/main). The device is (at the time of writing this) connected to the RoverNetwork-2.4G wifi network (password ********) and has the IP address 192.168.1.18. For SSH purposes, the username is sparcsdisplay and the password is ***********. <br>
+Passwords have been redacted in this README file, but can be seen in the Quick Start Guide in the IPL Google Drive, [here](https://docs.google.com/document/d/1rztsUWNQ_UNla__ePJH0NF1tjyUHg38vNBCQB7ZZ5wE/edit?usp=sharing).
 
 ## User Guide
 To use the device, one must SSH into the Raspberry Pi. First, connect to the RoverNetwork-2.4G wifi network (password MoveOverRover) and open a terminal on your computer. Type the following command and hit enter: 
@@ -14,7 +14,7 @@ To use the device, one must SSH into the Raspberry Pi. First, connect to the Rov
 ssh sparcsdisplay@192.168.1.18
 ```
 You'll be prompted to enter the password for the Pi, which is 1111. 
-Further reading about SSH can be found here and here.
+Further reading about SSH can be found [here](https://www.raspberrypi.com/documentation/computers/remote-access.html) and [here](https://docs.google.com/document/d/17vDdfAY1T-HF58JBEjj63zTxyzmByy_IIiqRBDq_gu4/edit?tab=t.0#heading=h.i6cid8e0faes).
 Once you've successfully SSH'd into the Pi, run the following commands in the terminal: 
 ```
 cd main
