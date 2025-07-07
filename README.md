@@ -33,5 +33,5 @@ After these timestamps are entered, the display will count down the days, hours,
 At the initialization of the program, the screen will flash either "AOS" or "LOS" to let you know which it's counting towards. This will also be displayed when there is less than an hour to AOS/LOS, AKA when the first three digits on the display (d:hh) are zero. 
 
 ### Known Issues
-- There are significant electrical issues with the connections between the Raspberry Pi and the daisy-chain of displays. This causes the display to glitch and fail. 
+- The device has a tendency to lose time noticeably over periods longer than a few minutes. This has been calibrated for slightly in code but should be improved upon by having the device periodically check in with the datetime object
 - The device’s Center of Gravity does not allow the “feet” (the pieces at either side of the device which slide out at angles and allow it to sit, slanted slightly upward, on flat surfaces) to be set at shallow angles. In a future redesign, this should be rectified by eliminating the “feet” entirely and redesigning the bottom attachment points (where bolts hold the two main 3D-printed pieces of the body together) to always prop the device up at a slight angle. 
