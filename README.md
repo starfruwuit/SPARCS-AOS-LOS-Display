@@ -1,5 +1,5 @@
 # SPARCS AOS/LOS Display: Quick Start Guide
-written by Ella Greetis 06-18-2025, updated 07-03-2025
+written by Ella Greetis 06-18-2025, updated 07-09-2025
 
 ### Device Purpose
 This device is a countdown display for SPARCS Satellite Acquisition of Signal (AOS) and Loss of Signal (LOS). The user will SSH into the device, input AOS and LOS timestamps (in UTC time), and the device will count down to those times. 
@@ -13,7 +13,7 @@ To use the device, one must SSH into the Raspberry Pi. First, connect to the Rov
 ```
 ssh sparcsdisplay@192.168.1.18
 ```
-You'll be prompted to enter the password for the Pi, which is 1111. 
+You'll be prompted to enter the password for the Pi, which is ****. 
 Further reading about SSH can be found [here](https://www.raspberrypi.com/documentation/computers/remote-access.html) and [here](https://docs.google.com/document/d/17vDdfAY1T-HF58JBEjj63zTxyzmByy_IIiqRBDq_gu4/edit?tab=t.0#heading=h.i6cid8e0faes).
 Once you've successfully SSH'd into the Pi, run the following commands in the terminal: 
 ```
