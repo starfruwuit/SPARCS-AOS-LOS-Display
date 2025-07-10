@@ -9,7 +9,13 @@ The AOS/LOS Display consists of a Raspberry Pi Model 3B+ and eight ELEGOO MAX721
 Passwords have been redacted in this README file, but can be seen in the Quick Start Guide in the IPL Google Drive, [here](https://docs.google.com/document/d/1rztsUWNQ_UNla__ePJH0NF1tjyUHg38vNBCQB7ZZ5wE/edit?usp=sharing).
 
 ## User Guide
-To use the device, one must SSH into the Raspberry Pi. First, connect to the RoverNetwork-2.4G wifi network (password MoveOverRover) and open a terminal on your computer. Type the following command and hit enter: 
+To use the device, one must SSH into the Raspberry Pi. 
+One way to do this is with an ethernet cable. attach the ethernet cable to your computer, configure the connection (i'm unsure if the Pi has a different ethernet IP address for each connection) and find the IP address of the pi. 
+ssh into it wiht the command:
+```
+ssh sparcsdisplay@10.42.0.53
+
+First, connect to the RoverNetwork-2.4G wifi network (password MoveOverRover) and open a terminal on your computer. Type the following command and hit enter: 
 ```
 ssh sparcsdisplay@192.168.1.18
 ```
