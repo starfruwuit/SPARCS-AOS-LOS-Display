@@ -14,7 +14,7 @@ One way to do this is with an ethernet cable. attach the ethernet cable to your 
 ssh into it wiht the command:
 ```
 ssh sparcsdisplay@10.42.0.53
-
+```
 First, connect to the RoverNetwork-2.4G wifi network (password MoveOverRover) and open a terminal on your computer. Type the following command and hit enter: 
 ```
 ssh sparcsdisplay@192.168.1.18
@@ -35,9 +35,9 @@ AOSyyyy/mm/dd/hh:mm:ss; LOSyyyy/mm/dd/hh:mm:ss
 By default, the program will pick the first entry to display first. 
 After these timestamps are entered, the display will count down the days, hours, minutes, seconds, and deciseconds until the AOS or LOS. Keep your computer powered on and the terminal open for as long as you wish to view the countdown. To stop the program, press Ctrl+C
 
-// The following feature has not yet been implemented: <br>
+The following feature has not yet been implemented: <br>
 At the initialization of the program, the screen will flash either "AOS" or "LOS" to let you know which it's counting towards. This will also be displayed when there is less than an hour to AOS/LOS, AKA when the first three digits on the display (d:hh) are zero. 
 
 ### Known Issues
-- The device has a tendency to lose time noticeably over periods longer than a few minutes. This has been calibrated for slightly in code but should be improved upon by having the device periodically check in with the datetime object
+- The device has a tendency lose time noticeably over periods longer than a few minutes. This has been calibrated for slightly in code but should be improved upon by having the device periodically check in with the datetime object
 - The device’s Center of Gravity does not allow the “feet” (the pieces at either side of the device which slide out at angles and allow it to sit, slanted slightly upward, on flat surfaces) to be set at shallow angles. In a future redesign, this should be rectified by eliminating the “feet” entirely and redesigning the bottom attachment points (where bolts hold the two main 3D-printed pieces of the body together) to always prop the device up at a slight angle. 

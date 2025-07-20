@@ -11,15 +11,30 @@ import asyncio
 serial = spi(port = 0, device = 0, gpio=noop())
 device = max7219(serial, cascaded = 8, block_orientation = 90, contrast = 0x2f)
 
-hold = 0.1 - 0.005  # refresh rate in seconds
+hold = 0.1 #- 0.005  # refresh rate in seconds
 verbose = False  # toggles verbose output. selected by user
 firstEntry = ""
 secondEntry = ""
 halfwayFlag = False  # True IF the first entry has alreay been completed
 completeFlag = False # True IF both entries have been completed
 zeroes = "00000000"
+AOSLOSchar = "-"
+Syear = 0
+Smonth = 0
+Sday = 0
+Shour = 0
+Smin = 0
+Ssec = 0
+Sdate = []
 
-def timeMath(entry): # takes in a string in the provided format and subtracts the current date, returns a list with 4 entries: days, hours, minutes, seconds
+def timeMathInitial(entry): # takes in a string in the provided format and subtracts the current date, returns a list with 4 entries: days, hours, minutes, seconds
+    global Syear
+    global Smonth
+    global Sday
+    global Shour
+    global Smin
+    global Ssec
+    global Sdate
     Syear = int(entry[3:7]) #Syear short for "signal year," the year in which the signal will be acquired/lost
     Smonth = int(entry[8:10])
     Sday = int(entry[11:13])
@@ -36,8 +51,8 @@ def timeMath(entry): # takes in a string in the provided format and subtracts th
     if verbose:
         print(f"the time between now and signal is {Dtime}")
     # if time has "days" >9, input is invalid and cannot be displayed
-    if Dtime.days >9:
-        raise ValueError("the number of days between now and signal is greater than nine, and unable to be displayed.")
+    if Dtime.days >0:
+        raise ValueError("the number of days between now and signal is greater than zero, and unable to be displayed.")
     Ddays = Dtime.days
     Dsec = Dtime.seconds % 60
     Dminutes = int(Dtime.seconds / 60)
@@ -48,6 +63,22 @@ def timeMath(entry): # takes in a string in the provided format and subtracts th
     delta = [Ddays, Dhours, Dminutes, Dsec]
     return delta
     
+def timeMathRefresh(): 
+    print("this function is not finished yet")
+    global Sdate
+    currTime = datetime.datetime.utcnow()
+    elapse = Sdate - currTime
+    Edays = elapse.days
+    Esec = elapse.seconds % 60
+    Eminutes = int(elapse.seconds / 60)
+    Ehours = int(Eminutes /60)
+    Eminutes = Eminutes % 60
+    if verbose: 
+        print(f"there are {Edays} days, {Ehours} hours, {Eminutes} minutes, and {Esec} seconds until signal")
+    epsilon = [Edays, Ehours, Eminutes, Esec]
+    return epsilon
+
+
 def validate(rawString): #takes in a "raw" string and makes sure it's in the specified format
     global firstEntry
     global secondEntry
@@ -75,6 +106,7 @@ def countdown(deltaTime): #takes a list in the style of [days, hours, minutes, s
     global completeFlag
     global zeroes
     global hold
+    global AOSLOSchar
     days = deltaTime[0]
     hours = deltaTime[1]
     minutes = deltaTime[2]
@@ -85,25 +117,33 @@ def countdown(deltaTime): #takes a list in the style of [days, hours, minutes, s
         if secondsAnd > 0:
             secondsAnd -= 1
             time.sleep(hold)
-            count = str(days) + zeroes[0:(2-len(str(hours)))] + str(hours) + zeroes[0:(2-len(str(minutes)))] + str(minutes) + zeroes[0:(3-len(str(secondsAnd)))] + str(secondsAnd)
+            count = AOSLOSchar + zeroes[0:(2-len(str(hours)))] + str(hours) + zeroes[0:(2-len(str(minutes)))] + str(minutes) + zeroes[0:(3-len(str(secondsAnd)))] + str(secondsAnd)
+            if secondsAnd % 300 == 0: #synchronize
+                deltaTime = timeMathRefresh()
+                days = deltaTime[0]
+                hours = deltaTime[1]
+                minutes = deltaTime[2]
+                secondsAnd = deltaTime[3] * 10 #seconds and deciseconds as one number
+                if verbose: 
+                    print("synchronization complete")
         elif minutes > 0:
             minutes -= 1
             secondsAnd += 599
             time.sleep(hold)
-            count = str(days) + zeroes[0:(2-len(str(hours)))] + str(hours) + zeroes[0:(2-len(str(minutes)))] + str(minutes) + zeroes[0:(3-len(str(secondsAnd)))] + str(secondsAnd)
+            count = AOSLOSchar + zeroes[0:(2-len(str(hours)))] + str(hours) + zeroes[0:(2-len(str(minutes)))] + str(minutes) + zeroes[0:(3-len(str(secondsAnd)))] + str(secondsAnd)
         elif hours > 0:
             hours -= 1
             minutes += 59
             secondsAnd += 599
             time.sleep(hold)
-            count = str(days) + zeroes[0:(2-len(str(hours)))] + str(hours) + zeroes[0:(2-len(str(minutes)))] + str(minutes) + zeroes[0:(3-len(str(secondsAnd)))] + str(secondsAnd)
+            count = AOSLOSchar + zeroes[0:(2-len(str(hours)))] + str(hours) + zeroes[0:(2-len(str(minutes)))] + str(minutes) + zeroes[0:(3-len(str(secondsAnd)))] + str(secondsAnd)
         elif days > 0:
             days -= 1
             hours += 23
             minutes += 59
             secondsAnd += 599 
             time.sleep(hold)
-            count = str(days) + zeroes[0:(2-len(str(hours)))] + str(hours) + zeroes[0:(2-len(str(minutes)))] + str(minutes) + zeroes[0:(3-len(str(secondsAnd)))] + str(secondsAnd)
+            count = AOSLOSchar + zeroes[0:(2-len(str(hours)))] + str(hours) + zeroes[0:(2-len(str(minutes)))] + str(minutes) + zeroes[0:(3-len(str(secondsAnd)))] + str(secondsAnd)
         else:
             countdownDoneFlag = True
             count = "00000000"
@@ -119,7 +159,8 @@ def GrabData():
     global firstEntry
     global secondEntry
     global halfwayFlag
-    # CODE TO RETREIVE DATA GOES HERE
+    global dataValid
+    # RETREIVE DATA 
     dataValid = False
     while not dataValid and not halfwayFlag:
         raw = input("please enter your AOS/LOS timestamps in UTC time, in exactly the format 'AOSyyyy/mm/dd/hh:mm:ss; LOSyyyy/mm/dd/hh:mm:ss'--> ")
@@ -143,6 +184,7 @@ def main():
     global verbose
     global halfwayFlag
     global completeFlag
+    global AOSLOSchar
     verboseAsk = input("would you like verbose output in your terminal? [y/n] ")
     if verboseAsk == "y":
         verbose = True # enables verbose output
@@ -150,9 +192,11 @@ def main():
         if not halfwayFlag:
             delta1 = GrabData()
             countdown(delta1)
+            AOSLOSchar = "A"
         elif not completeFlag:
             delta2 = GrabData()
             countdown(delta2)
+            AOSLOSchar = "L"
     with canvas(device) as draw:
         text(draw, (1,0), "__DONE__", fill="white", font = SINCLAIR_FONT)
 
