@@ -64,7 +64,6 @@ def timeMathInitial(entry): # takes in a string in the provided format and subtr
     return delta
     
 def timeMathRefresh(): 
-    print("this function is not finished yet")
     global Sdate
     currTime = datetime.datetime.utcnow()
     elapse = Sdate - currTime
@@ -77,7 +76,6 @@ def timeMathRefresh():
         print(f"there are {Edays} days, {Ehours} hours, {Eminutes} minutes, and {Esec} seconds until signal")
     epsilon = [Edays, Ehours, Eminutes, Esec]
     return epsilon
-
 
 def validate(rawString): #takes in a "raw" string and makes sure it's in the specified format
     global firstEntry
